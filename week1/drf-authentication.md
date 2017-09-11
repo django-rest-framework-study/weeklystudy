@@ -196,3 +196,4 @@ REST_FRAMEWORK = {
 
 ## 참고자료
 - [Django rest framework 공식문서 - Authentication](http://www.django-rest-framework.org/api-guide/authentication/)
+- [토큰 기반 인증](http://behonestar.tistory.com/37)
