@@ -1,5 +1,5 @@
 # Permissions
-- [Authentication]()과 Permissions는 접근을 수락할 것인지 거부할 것인지를 결정한다.
+- [Authentication](https://github.com/django-rest-framework-study/weeklystudy/blob/master/week1/drf-authentication.md)과 Permissions는 접근을 수락할 것인지 거부할 것인지를 결정한다.
 - Permissions는 보통 다른 인스턴스 정보를 가진 사용자가 나의 인스턴스만 접근할 수 있는 페이지에 접근하려할 때 사용된다.
 - Permissions는 항상 다른 코드가 실행되기 전, **View가 시작될 때 체크** 하며, `요청에 대한 허용 여부를 판단`하기 위해  `request.user`와 `request.auth`의 인증 정보를 사용한다.
 
