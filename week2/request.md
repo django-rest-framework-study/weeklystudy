@@ -132,9 +132,9 @@ def snippet_list(request):
  - 
 ### DRF 의 Request 가 적용 되는 과정
 Response 의 경우 직접 view method 에서 직접 instance 화 시켜서 리턴하지만, Request 의 경우 view 내에서 호출되어 instace 화 되기때문에 코드를 통해 어떠한 방식으로 drf Request가 instance 가 되는지 공유하겠습니다.
-    1. 기본 django View class Method Flowchart를 보면 처음 dispatch 를 호출
+1. 기본 django View class Method Flowchart를 보면 처음 dispatch 를 호출
 ![image](https://user-images.githubusercontent.com/14916432/30532227-0378d1b2-9c8e-11e7-9dad-143e26e4d3ad.png)
-    2. django View 를 상속받은 drf APIView
+2. django View 를 상속받은 drf APIView
 
 ```python
 class APIView(View):
@@ -171,7 +171,7 @@ class APIView(View):
         self.response = self.finalize_response(request, response, *args, **kwargs)
         return self.response
 ```
-    3. drf 의 initialize_request
+3. drf 의 initialize_request
 
 ```python
 from rest_framework.request import Request
