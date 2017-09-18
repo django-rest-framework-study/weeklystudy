@@ -11,7 +11,7 @@
 5. POST 방식등 body에 데이터를 담아 보내는 경우
     - 예) curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' https://django-study.kr/chapter/1/
 
-위 5가지 케이스에 대한 클라이언트 요청처리와 reuqest에 대해 알아보겠습니다.
+위 5가지 케이스에 대한 클라이언트 요청처리와 request에 대해 알아보겠습니다.
 
 ## 1. 특정 url 로 요청을 보내는 경우 
 - 장고는 urls.py 에서 라우팅 처리를 통해 정규표현식과 일치하는 각각의 `view`에 대해 요청을 보냅니다.
@@ -75,7 +75,7 @@ def snippet_list(request):
 - 지난주 토큰 인증에서 알아보았듯, 헤더에  `Authorization` 라는 key 로  value 에 토큰을 담아 auth 처리를 하거나, `Accept` key로 response 받을 data-type을 지정하거나,  `Content-Type` key로 보내는 body 데이터의 type 정보를 제공하기도 합니다.
  - `request.META` 를 통해 각 request header 정보에 접근 할 수 있습니다.
    - 하지만 ` request.META` 에는 `header`이외에 장고 프로세스에 필요한`여러 환경 변수` 또한 담겨 있습니다.
-   - 이때문에 클라이언트의 요청에서 보내는 `custom request header` 장고의 `여러 환경 변수`들과 구붓짓기 위해 장고는 다음과 같은 전처리 과정을 거칩니다.
+   - 이때문에 클라이언트의 요청에서 보내는 `custom request header` 장고의 `여러 환경 변수`들과 구분짓기 위해 장고는 다음과 같은 전처리 과정을 거칩니다.
       1. 모든 문자는 대문자로 (Device-Access-token -> DEVICE-ACCESS-TOKEN)
       2. 대시바는 언더바로 (DEVICE-ACCESS-TOKEN -> DEVICE_ACCESS_TOKEN)
       3. 앞에 ' HTTP_ '  를 더한다 (HTTP_DEVICE_ACCESS_TOKEN)
@@ -91,7 +91,7 @@ def snippet_list(request):
 ```
 
 
-## 3. url query_aram 을 이용하는 경우
+## 3. url query_param 을 이용하는 경우
 - request.GET 에 여러 url query param 이 담겨있습니다.
 - 예를들어 -x https://django-study.kr/chapter/?accept=application/json의 경우 request.GET.get('accept')를 통해 해당 parameter를 얻을 수 있습니다.
 - 하지만, GET.get 모양도 안이쁘고 명시적이지도 않기에 좀더 명시적으로 request.query_param을 구현해 놓았습니다.
@@ -131,7 +131,7 @@ def snippet_list(request):
 - `request.authenticators` 는 처리되는 auth 리스트를 확인 할 수 있습니다.
  - 
 ### DRF 의 Request 가 적용 되는 과정
-Response 의 경우 직접 view method 에서 직접 instance 화 시켜서 리턴하지만, Request 의 경우 view 내에서 호출되어 instace 화 되기때문에 코드를 통해 어떠한 방식으로 drf Request가 instance 가 되는지 공유하겠습니다.
+Response 의 경우 직접 view method 에서 직접 instance 화 시켜서 리턴하지만, Request 의 경우 view 내에서 호출되어 instance 화 되기때문에 코드를 통해 어떠한 방식으로 drf Request가 instance 가 되는지 공유하겠습니다.
 1. 기본 django View class Method Flowchart를 보면 처음 dispatch 를 호출
 ![image](https://user-images.githubusercontent.com/14916432/30532227-0378d1b2-9c8e-11e7-9dad-143e26e4d3ad.png)
 2. django View 를 상속받은 drf APIView
