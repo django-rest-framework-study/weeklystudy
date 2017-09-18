@@ -1,9 +1,9 @@
 # Django REST framework
 
 - [발표 주제 및 순서 docs](https://goo.gl/eQMxSL)
-
+## Week1
 - Week 0(All) - DRF Tutorial
-- Week 1(희진) - Authentication / Permissions
+- Week 1(희진) - [Authetication](https://github.com/django-rest-framework-study/weeklystudy/blob/master/week1/drf-authentication.md) / [Permissions](https://github.com/django-rest-framework-study/weeklystudy/blob/master/week1/drf-permissions.md)
 - Week 2(지영) - Requests / Responses
 - Week 3(지형) - Status codes / Exceptions
 - Week 4(준영) - Filtering / Pagination
