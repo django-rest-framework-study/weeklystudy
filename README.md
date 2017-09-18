@@ -4,7 +4,7 @@
 ## Week1
 - Week 0(All) - DRF Tutorial
 - Week 1(희진) - [Authetication](https://github.com/django-rest-framework-study/weeklystudy/blob/master/week1/drf-authentication.md) / [Permissions](https://github.com/django-rest-framework-study/weeklystudy/blob/master/week1/drf-permissions.md)
-- Week 2(지영) - Requests / Responses
+- Week 2(지영) - [Requests](https://github.com/django-rest-framework-study/weeklystudy/blob/master/week2/request.md) / Responses[https://github.com/django-rest-framework-study/weeklystudy/blob/master/week2/response.md]
 - Week 3(지형) - Status codes / Exceptions
 - Week 4(준영) - Filtering / Pagination
 - Week 5(희찬) - Views / Generic views / Viewsets, Router + RESTful
