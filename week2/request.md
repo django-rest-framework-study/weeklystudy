@@ -1,15 +1,15 @@
 # Requests
 클라이언트가 웹 서버로 요청을 보내는 방법은 다음과 같습니다.
 1. 특정 url 로 요청을 보내는 경우 
-예) -X GET https://django-study.kr/chapter/
+    - 예) -X GET https://django-study.kr/chapter/
 2. (1) + header 에 정보를 담아 보내는 경우
-예) -H "Accept: application/json" -H "Content-Type: application/json" -X GET https://django-study.kr/chapter/
+    - 예) -H "Accept: application/json" -H "Content-Type: application/json" -X GET https://django-study.kr/chapter/
 3. url query_param 을 이용하는 경우
-예) -x https://django-study.kr/chapter/?accept=application/json
+    - 예) -x https://django-study.kr/chapter/?accept=application/json
 4. url slug field  를 이용하는 경우 (https://django-study.kr/chapter/{chapter_no}/)
-예) -X GET https://django-study.kr/chapter/1/
+    - 예) -X GET https://django-study.kr/chapter/1/
 5. POST 방식등 body에 데이터를 담아 보내는 경우
-예) curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' https://django-study.kr/chapter/1/
+    - 예) curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' https://django-study.kr/chapter/1/
 
 위 5가지 케이스에 대한 클라이언트 요청처리와 reuqest에 대해 알아보겠습니다.
 
