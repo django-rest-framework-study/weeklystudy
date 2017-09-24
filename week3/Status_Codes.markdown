@@ -122,8 +122,8 @@ HTTP_511_NETWORK_AUTHENTICATION_REQUIRED
 
 ```
 is_informational()	# 1xx
-is_success()			# 2xx
-is_redirect()			# 3xx
+is_success()		# 2xx
+is_redirect()		# 3xx
 is_client_error()	# 4xx
 is_server_error()	# 5xx
 ```
