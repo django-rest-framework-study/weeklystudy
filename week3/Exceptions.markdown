@@ -1,5 +1,6 @@
 # Exceptions
 
+
 ### DRF views에서의 예외 처리
 
 DRF의 views에서 다양한 error에 알맞는 response를 반환해줌으로써 exception을 처리합니다.
