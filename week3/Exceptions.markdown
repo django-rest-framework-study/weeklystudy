@@ -160,7 +160,7 @@ validation error의 경우 error detail은 list 또는 dictionary 형태로 반�
 {"name":{"message":"This field is required.","code":"required"},"age":{"message":"A valid integer is required.","code":"invalid"}}
 ```
 ---
-<br><br>
+<br>
 ### ParseError
 
 **Signature:** `ParseError(detail=None, code=None)`
