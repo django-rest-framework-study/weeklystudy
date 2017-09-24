@@ -11,4 +11,4 @@
 - Week 6(명서) - Serializers / Serializer fields / Serializer relations / Testing
 - Week 7(준범)
 - Week 8(정욱) - Validators
-- Week 9(동욱)
+- Week 9(지영) - Renderer / Parser / VueJS + DRF 
