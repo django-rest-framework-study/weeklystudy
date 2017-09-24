@@ -1,5 +1,5 @@
 # Status Codes
---
+
 #### DRF에서 Response에 알맞는 status code 사용시, bare 형태보다 DRF 내에 포함된 코드를 사용하는 걸 선호합니다.
 
 각 view의 Response에 필요한 status code를 돌려줍니다.
