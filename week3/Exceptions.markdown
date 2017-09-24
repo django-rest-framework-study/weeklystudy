@@ -169,7 +169,7 @@ Reqeust가 잘못된 data를 가지고 `request.data`에 접근하려고 할 때
 
 default 값으로 HTTP status code인 "400 Bad Request'를 가진 response가 들어갑니다.
 
---
+---
 
 ### AuthenticationFailed
 
@@ -180,7 +180,7 @@ incoming request가 잘못된 authentication을 포함할 때 발생합니다.
 default 값으로 HTTP status code인 "401 Unauthenticated"를 가지고 있지만, authentication scheme에 따라 "403 Forbidden"를 가진 response가 들어갈 수 있습니다.
 **authentication documentation**에서 자세한 내용을 참고.
 
---
+---
 
 ### NoAuthenticated
 
@@ -189,7 +189,7 @@ default 값으로 HTTP status code인 "401 Unauthenticated"를 가지고 있지�
 **AuthenticationFailed**와 동일.
 ***다시 확인하기
 
---
+---
 
 ### PermissionDenied
 
@@ -199,7 +199,7 @@ default 값으로 HTTP status code인 "401 Unauthenticated"를 가지고 있지�
 
 default 값으로 HTTP status code인 "403 Forbidden"를 가진 response가 들어갑니다.
 
---
+---
 
 ### NotFound
 
@@ -209,7 +209,7 @@ default 값으로 HTTP status code인 "403 Forbidden"를 가진 response가 들�
 
 default 값으로 HTTP status code인 "404 Not Found"를 가진 response가 들어갑니다.
 
---
+---
 
 ### MethodNotAllowed
 
@@ -219,7 +219,7 @@ view에 존재하는 handler method에 전달되지 않는 incoming request가 �
 
 default 값으로 HTTP status code인 "405 Method Not Allowed"를 가진 response가 들어갑니다.
 
---
+---
 
 ### NotAcceptable
 
@@ -229,7 +229,7 @@ default 값으로 HTTP status code인 "405 Method Not Allowed"를 가진 respons
 
 default 값으로 HTTP status code인 "406 Not Acceptable"를 가진 response가 들어갑니다.
 
---
+---
 
 ### UnsupportedMediaType
 
@@ -239,7 +239,7 @@ default 값으로 HTTP status code인 "406 Not Acceptable"를 가진 response가
 
 default 값으로 HTTP status code인 "415 Unsupported Media Type"를 가진 response가 들어갑니다.
 
---
+---
 
 ### Throttled
 
@@ -251,7 +251,7 @@ default 값으로 HTTP status code인 "429 Too Many Requests"를 가진 response
 
 > throttling - 짧은 시간에 여러번의 같은 요청을 하나의 요청으로 서버에 전송시켜 서버 부하를 방지하는 방법
 
---
+---
 
 ### ValidationError
 
