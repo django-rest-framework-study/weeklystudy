@@ -10,7 +10,7 @@ django의 기본 queryset을 사용하면 특정 모델의 모든 objects를 반
 * query 인자로 필터링하기
 * user로 필터링하기
 
-## URL로 필터링하기
+### URL로 필터링하기
 
 url의 마지막 부분을 가지고 query를 하는 방법입니다.
 예를 들어 저의 예제에서는
@@ -56,7 +56,7 @@ company와 job_name으로 다중 필터링을 한다고하면 url이
 또한 위의 url은 job_name과 company를 동시에 필터링하는 url 이면서 순서를 지켜서 넣어줘야한다는 단점이 있겠네요.
 즉 job_name으로만, 혹은 company로만 필터링 하기는 어려워지는 거겠죠?
 
-## query 인자로 필터링하기
+### query 인자로 필터링하기
 
 이번에는 query parameter를 가지고 필터링을 해보겠습니다.
 기본적으로 주어진 api 주소에 parameter를 넘겨서 필터링을 하는 방법입니다.
@@ -87,15 +87,95 @@ if로 분기처리를 통해 None이 아닌 경우 filter를 적용합니다.
 postman으로 확인해봅니다.
 <img src="images/1.png" alt="params 적용 전" width= "80%" />
 
-<img src="images/1.png" alt="params 적용 후" width= "80%" />
-## user로 필터링하기
+<img src="images/2.png" alt="params 적용 후" width= "80%" />
 
-## Generic Filtering
-## Setting filter backends
-## Filtering and object lookups
-## Overriding the initial queryset
-## API Guide
-## DjangoFilterBackend
+
+### user로 필터링하기
+
+## Generic Filtering 하기
+
+위에서 한 것 처럼 queryset을 override하는 방식으로 filtering을 할 수 있지만,
+REST-framework는 쉽게 복잡한 filtering을 할 수 있도록 backend를 지원합니다.
+쉽게 필터링 할 수 있도록 browsable한 view까지 제공하죠. 어떻게 하는 걸까요?
+
+### filter backends 세팅하기
+
+먼저 settings.py에서 다음 코드를 추가해줍니다.
+```python
+# settings.py
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+}
+```
+추가된 부분은 사실
+
+```python
+'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
+```
+의 부분입니다.
+
+물론 default를 설정하지 않고 view에서 직접 filtering 방법을 선택할 수도 있지요.
+
+```python
+# views.py
+class job_api(generics.ListAPIView):
+    serializer_class = JobSerializer
+    queryset = Job.objects.all()
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+    filter_fields = ('job_name', 'company')
+```
+이렇게요.
+
+#### DjangoFilterBackend
+그 다음에, `django_filters` 라는 라이브러리를 깔아줍니다.
+이후에는
+```python
+# settings.py
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'position',
+
+    # REST framework
+    'rest_framework',
+
+    # django_filters
+    'django_filters',
+]
+```
+위와 같이 settings.py의 INSTALLED_APPS에 추가해주시고요.
+추가해주지 않으면 django_filters 에 제공되는 템플릿이 없다고 나옵니다.
+
+다시 views.py 코드를 볼까요.
+
+```python
+# views.py
+class job_api(generics.ListAPIView):
+    serializer_class = JobSerializer
+    queryset = Job.objects.all()
+    filter_backends = (django_filters.rest_framework.DjangoFilterBackend,)
+    filter_fields = ('job_name', 'company')
+```
+위 코드에서 filter_fields 항목에 filtering하고자 하는 key 값들을 적어줍니다.
+search를 적용하고 싶다면 search_fields, ordering의 기준이 되는 key들을 적어주고 싶다면 ordering_fields를 사용하면 됩니다.
+
+<img src="images/3.png" alt="params 적용 후" width= "80%" />
+
+위의 과정들을 다 적용하면 이렇게 나옵니다.
+
+즉 query_params를 사용해서 if 문을 다 걸어준 것과 마찬가지인 경우가 나옵니다.
+차이점이라면 generic을 사용할 때에는 그냥 fields만 적어주면 됩니다.
+
 ## SearchFilter
 ## OrderingFilter
 ## DjangoObjectPermissionsFilter
