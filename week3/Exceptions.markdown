@@ -103,8 +103,11 @@ Exception handler는 해당 exception에서 발생한 response로 호출된다�
 이는 `HTTP_400_BAD_REQUEST`와 같이 serializer validation이 실패했을 때 generic views에서 반환되는 것과 같이, views에 의해 즉시 반환되는 response에서 쓰이지 않습니다. ***
 
 <br>
+
 --
+
 # API Reference
+
 ### APIException
 
 **Signiture:** `APIException()`
@@ -160,7 +163,9 @@ validation error의 경우 error detail은 list 또는 dictionary 형태로 반�
 {"name":{"message":"This field is required.","code":"required"},"age":{"message":"A valid integer is required.","code":"invalid"}}
 ```
 ---
+
 <br>
+
 ### ParseError
 
 **Signature:** `ParseError(detail=None, code=None)`
