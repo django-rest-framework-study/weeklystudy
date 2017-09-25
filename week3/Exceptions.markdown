@@ -266,7 +266,7 @@ default 값으로 HTTP status code인 "429 Too Many Requests"를 가진 response
 
 * `detail` argument가 필수적으로 입력되어야 합니다.
 * `detail` argument가 error detail이 list 또는 dictionary와 같은 집합적인(nested) data 구조로 되어 있을 수 있습니다.
-* 관습대로(by convention) Django의 built-in validation error와 구별하기 위해 serializder module을 import 시켜야하고, 적합한 `ValidationError`를 사용해야 합니다.
+* 관습대로(by convention) Django의 built-in validation error와 구별하기 위해 serializer module을 import 시켜야하고, 적합한 `ValidationError`를 사용해야 합니다.
 <br>예시 :  `raise.serializers.ValidationError('This field must be an integer value.')`
 
 `ValidationError` 클래스는 serializer와 field validation에 validator class로써 사용되어야 합니다.<br>
