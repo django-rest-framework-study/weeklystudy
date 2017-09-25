@@ -31,7 +31,7 @@ Content-Length: 42
 
 Validation error는 조금 다르게 처리를 하며, 필드명을 response 내에 key 형태로 포함시킵니다. 만약 validation error가 특정 field에 특정되어 있지 않으면, "non\_field\_errors" 키를 사용하거나, `NON_FIELD_ERRORS_KEY`에 저장된 값으로 지정될 것입니다.
 
-예를 들어:
+Validation error의 경우:
 
 ```
 HTTP/1.1 400 Bad Request
