@@ -11,7 +11,7 @@ Pagination API는 다음 두가지 방식을 지원합니다.
 * Pagination link가 response 값의 content안에 제공되는 방식 (built-in된 방식)
 * Pagination link가 response 값의 header안에 포함되는 방식
 
-Pagination은 일반 APIView가 아닌 GenericAPIView나 viewset을 사용해야만 자동으로 사용할 수 있습니다.
+Pagination은 일반 APIView가 아닌 GenericAPIView나 viewset 을 사용해야만 자동으로 사용할 수 있습니다.
 APIView를 사용한다면 따로 Pagination API를 호출해야합니다.
 
 ## Pagination 스타일 설정하기
@@ -31,6 +31,7 @@ REST_FRAMEWORK = {
 
 그러면 위에서 말한대로, response content안에 값들이 생기게 됩니다.
 <img src="images/4.png" alt="pagination 설정" width= "80%" />
+
 count는 총 데이터의 갯수, next는 다음 page의 url, previous는 이전 page의 url에 해당합니다.
 
 settings.py에 설정한 건 default 값입니다. 하지만 view마다 따로 pagination class 값를 설정해 줄 수도 있습니다.
@@ -58,7 +59,8 @@ Custom Pagination을 적용해주려면,아래와 같이 pagination_class를 cus
 class job_api(generics.ListAPIView):
     serializer_class = JobSerializer
     queryset = Job.objects.all()
-    filter_backends = (filters.SearchFilter,django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter,)
+    filter_backends = (filters.SearchFilter,django_filters.rest_framework.DjangoFilterBackend,
+    filters.OrderingFilter,)
     search_fields = ('job_name', 'company')
     filter_fields = ('job_name', 'company')
     ordering_fields = ('job_name','company')
@@ -68,6 +70,7 @@ class job_api(generics.ListAPIView):
 ```
 
 적용한 모습을 볼까요?
+
 <img src="images/5.png" alt="pagination 설정" width= "80%" />
 
 ## API 레퍼런스
@@ -95,7 +98,7 @@ HTTP 200 OK
 
 GenericAPIView에서는 기본적으로 PageNumberPagination이 적용이 되어있습니다.
 
-다음과 같은 정보들을 커스텀하고 싶다면, PageNumberPagination를 상속해서 위에서 말한 것 처럼 적용하면 됩니다.
+다음과 같은 정보들을 커스텀하고 싶다면, PageNumberPagination를 상속해서 위와 같이 적용하면 됩니다.
 
 ```
 django_paginator_class
@@ -108,7 +111,9 @@ page_query_param
 # pagination 관리에 쓰이는 query parameter의 이름을 나타내는 string 값.
 
 page_size_query_param
-# page_size query를 쓸 수 있으면 request 당 불러올 page 사이즈를 client가 설정할 수 있게 됩니다. 이 때 필요한 query parameter의 이름을 나타내는 string 값입니다.
+# page_size query를 쓸 수 있으면 request 당 불러올 page 사이즈를 client가 설정할 수 있게 됩니다.
+
+이 때 필요한 query parameter의 이름을 나타내는 string 값입니다.
 
 max_page_size
 # 최대 요청가능한 page size값입니다. page_size_query_param 가 설정되어야만 쓸 수 있습니다.
@@ -117,19 +122,95 @@ last_page_strings
 # page_query_param와 함께 마지막 page를 요청할 때 쓰일 수 있는 string 값. 기본값은 ('last',)
 
 template
-# browsable API 로 만들 때 쓰이는 pagination control template의 이름. 기본값은 "rest_framework/pagination/numbers.html".
+# browsable API 로 만들 때 쓰이는 pagination control template의 이름.
+
+기본값은 "rest_framework/pagination/numbers.html".
 
 ```
 
 ### LimitOffsetPagination
-## CursorPagination
+이 Pagination 방식은 여러 database 조회 문법을 반영한 방식입니다.
+
+사용자는 `limit`와 `offset`이라는 query parameter를 사용할 수 있습니다.
+
+limit는 반환받고 싶은 아이템의 갯수를 의미합니다.
+
+다른 Pagination에서는 page_size와 같은 개념이구요.
+
+offset은 pagination 되지 않은 원래 데이터 집합을 기준으로, 시작할 지점을 의미합니다.
+
+예를 들어 offset=400은 데이터 집합에서 400번째 부터 데이터를 달라는 뜻입니다.
+
+
+요청방식은 다음과 같습니다.
+```
+GET https://api.example.org/accounts/?limit=100&offset=400
+```
+
+응답방식은 다음과 같습니다.
+```
+HTTP 200 OK
+{
+    "count": 1023
+    "next": "https://api.example.org/accounts/?limit=100&offset=500",
+    "previous": "https://api.example.org/accounts/?limit=100&offset=300",
+    "results": [
+       …
+    ]
+}
+```
+
+설정은 이렇게 할 수 있습니다.
+
+```python
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination'
+}
+
+# 혹은
+
+# views.py
+
+import rest_framework.pagination import LimitOffsetPagination
+class job_api(generics.ListAPIView):
+    serializer_class = JobSerializer
+    queryset = Job.objects.all()
+    filter_backends = (filters.SearchFilter,django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter,)
+    search_fields = ('job_name', 'company')
+    filter_fields = ('job_name', 'company')
+    ordering_fields = ('job_name','company')
+    ordering = ('job_name')
+    pagination_class = LimitOffsetPagination
+```
+
+settings에서 설정할때, page_size key를 설정할 수도 있습니다.
+
+여기에서는 limit가 page_size에 해당하므로, page_size를 설정하는 경우에는 유저가 limit를 정해줄 필요는 없습니다.
+
+다음과 같은 정보들을 커스텀하고 싶다면, LimitOffsetPagination 상속해서 위와 같이 적용하면 됩니다.
+
+```
+default_limit
+# client가 query parameter로 limit값을 안넘겨 줄 때 쓰이는 숫자 값. 기본 값은 settings에 있는 PAGE_SIZE와 같습니다.
+
+limit_query_param
+# 'limit'로 쓰이는 query parameter의 이름이 되는 값. 기본 값은 'limit'
+
+offset_query_param
+# 'offset'로 쓰이는 query parameter의 이름이 되는 값. 기본 값은 'offset'
+
+max_limit
+# client가 요청할 수 있는 최대 값. 기본 값은 None(즉 제한 없음)
+
+template
+# browsable API 로 만들 때 쓰이는 pagination control template의 이름.
+기본은"rest_framework/pagination/numbers.html".
+```
+
+### CursorPagination
 ## Custom pagination styles
 ## Example
 ## Using your custom pagination class
 ## Pagination & schemas
 ## HTML pagination controls
 ## Customizing the controls
-## Third party packages
-## DRF-extensions
-## drf-proxy-pagination
-## link-header-pagination
