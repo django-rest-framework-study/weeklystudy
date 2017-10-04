@@ -177,6 +177,56 @@ search를 적용하고 싶다면 search_fields, ordering의 기준이 되는 key
 차이점이라면 generic을 사용할 때에는 그냥 fields만 적어주면 됩니다.
 
 ## SearchFilter
+
+위의 filter는 `쿼리와 동일한 값`만 출력해줍니다.
+예를 들어 `django girls organizer` 라는 job을 찾고 싶으면 띄어쓰기와 대소문자까지 맞춰서 정확히 써줘야합니다.
+`django`가 포함된 값을 모두 찾고 싶다면 어떻게 해야할까요?
+
+searchFilter는 [Django Admin search_fields](https://docs.djangoproject.com/en/1.11/ref/contrib/admin/#django.contrib.admin.ModelAdmin.search_fields)를 이용해서 작동이됩니다.
+그리고 Django Admin Search Fields는 단순한 `ILIKE` 쿼리를 사용하는 것이기 때문에, 대소문자에 상관없이(case-insensitive) 검색이 된거죠.
+
+```python
+#views.py
+#최상단에 다음 코드를 import한다.
+from rest_framework import filters
+
+class job_api(generics.ListAPIView):
+    serializer_class = JobSerializer
+    queryset = Job.objects.all()
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('job_name', 'company')
+
+```
+
+search_fields를 사용하는 방법도 다음과 같이 다양합니다.
+
+```
+'^'
+# 해당 단어로 시작하는 것만 검색
+'=' Exact matches.
+# 정확히 해당 단어 인 것만 검색
+
+'@'
+# Full Text 검색(전문검색) (Django에서 MySQL 사용할때만 지원)
+
+'$' Regex search.
+# 정규식 검색
+```
+
+Full-text 검색에는
+%를 사용한 단순 LIKE 검색뿐 아니라, 단어별로 나눠서 해당 단어들이 포함된 행을 찾는 `자연어검색`, 자연어검색에 연산자와 구문검색이 가능하도록 하는 `불린검색`등이 포함되어있습니다.
+full-text 검색에 대한 내용은 [참고자료](https://kmongcom.wordpress.com/2014/03/28/mysql-%ED%92%80-%ED%85%8D%EC%8A%A4%ED%8A%B8fulltext-%EA%B2%80%EC%83%89%ED%95%98%EA%B8%B0/)에서 자세히 살펴볼 수 있습니다.
+
+또한 search를 할 때 `?search=` 의 형태로 검색이 되는데요,
+search가 아니라 다른 단어를 쓰고 싶다면 `rest_framework.settings.py`에서 변경 가능합니다.
+```
+# Filtering
+'SEARCH_PARAM': 'search',
+# 'search' 대신 다른 단어를 넣어보자
+'ORDERING_PARAM': 'ordering',
+```
+
+
 ## OrderingFilter
 ## DjangoObjectPermissionsFilter
 ## Custom generic filtering
