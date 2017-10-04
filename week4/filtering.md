@@ -183,7 +183,10 @@ search를 적용하고 싶다면 search_fields, ordering의 기준이 되는 key
 `django`가 포함된 값을 모두 찾고 싶다면 어떻게 해야할까요?
 
 searchFilter는 [Django Admin search_fields](https://docs.djangoproject.com/en/1.11/ref/contrib/admin/#django.contrib.admin.ModelAdmin.search_fields)를 이용해서 작동이됩니다.
-그리고 Django Admin Search Fields는 단순한 `ILIKE` 쿼리를 사용하는 것이기 때문에, 대소문자에 상관없이(case-insensitive) 검색이 된거죠.
+
+그리고 Django Admin Search Fields는 단순한 `ILIKE` 쿼리를 사용하는 것이기 때문에, 대소문자에 상관없이(case-insensitive) 검색이 되어요.
+
+기본 검색 로직은 search_fields에 포함된 행들 중, 입력한 단어가 포함된 결과가 있으면 뿌려주는 방식입니다.
 
 ```python
 #views.py
@@ -203,6 +206,7 @@ search_fields를 사용하는 방법도 다음과 같이 다양합니다.
 ```
 '^'
 # 해당 단어로 시작하는 것만 검색
+
 '=' Exact matches.
 # 정확히 해당 단어 인 것만 검색
 
@@ -214,7 +218,9 @@ search_fields를 사용하는 방법도 다음과 같이 다양합니다.
 ```
 
 Full-text 검색에는
-%를 사용한 단순 LIKE 검색뿐 아니라, 단어별로 나눠서 해당 단어들이 포함된 행을 찾는 `자연어검색`, 자연어검색에 연산자와 구문검색이 가능하도록 하는 `불린검색`등이 포함되어있습니다.
+%를 사용한 단순 LIKE 검색뿐 아니라,
+단어별로 나눠서 해당 단어들이 포함된 행을 찾는 `자연어검색`, 자연어검색에 연산자와 구문검색이 가능하도록 하는 `불린검색`등이 포함되어있습니다.
+
 full-text 검색에 대한 내용은 [참고자료](https://kmongcom.wordpress.com/2014/03/28/mysql-%ED%92%80-%ED%85%8D%EC%8A%A4%ED%8A%B8fulltext-%EA%B2%80%EC%83%89%ED%95%98%EA%B8%B0/)에서 자세히 살펴볼 수 있습니다.
 
 또한 search를 할 때 `?search=` 의 형태로 검색이 되는데요,
@@ -226,15 +232,68 @@ search가 아니라 다른 단어를 쓰고 싶다면 `rest_framework.settings.p
 'ORDERING_PARAM': 'ordering',
 ```
 
-
 ## OrderingFilter
+`OrderingFilter`를 사용하면 편리하게 순서를 지정해서 List결과를 뿌릴 수 있습니다.
+
+```python
+#views.py
+#최상단에 다음 코드를 import한다.
+from rest_framework import filters
+
+class job_api(generics.ListAPIView):
+    serializer_class = JobSerializer
+    queryset = Job.objects.all()
+    filter_backends = (filters.SearchFilter,django_filters.rest_framework.DjangoFilterBackend,filters.OrderingFilter,)
+    search_fields = ('job_name', 'company')
+    filter_fields = ('job_name', 'company')
+    ordering_fields = ('job_name','company')
+
+```
+
+위와 같이 ordering_fields를 설정하면, job_name에 대해서 오름차순 / 내림차순, company에 대해서 오름차순/ 내림차순을 설정할 수 있게 됩니다.
+
+url상으로는 정렬하고자 하는 인자 앞에 -를 붙이면 내림차순, 붙이지 않으면 오름차순이 됩니다.
+
+### 여러 field로 순서 정하기
+company로 먼저 순서를 정하고, company가 같은 경우 job_name으로 정하고 싶을 수도 있겠죠!
+
+그러면 `<url>/?ordering=company,job_name` 과 같이, `,` 구분자로 나눠서 써주면됩니다.
+
+내부에서는 다음과 같이 django queryset order_by을 사용하고 있기 때문에 company로 먼저, job_name이 그 다음으로 정렬됩니다.
+
+```python
+#rest_framework.filters.py
+
+def filter_queryset(self, request, queryset, view):
+       ordering = self.get_ordering(request, queryset, view)
+
+       if ordering:
+           return queryset.order_by(*ordering)
+
+       return queryset
+```
+
+### ordering field 에 관해  
+
+또한, ordering fields는 명시적으로 선언해주는게 좋습니다.
+
+데이터 누수와, 보안적으로 중요한 field(유저의 비밀번호 hash 필드) 등이 정렬되는 것을 막기 위해서입니다.
+
+만약 선언을 하지 않으면 OrderingFilter는
+`serializer_class` 에 선언된 fields 중 현재 user가 읽기가능한 모든 field에 대해서 ordering이 가능하게 해버립니다.
+
+보안이 중요한 fields가 없다고 한다면, 어떤 modelfield에 대해서도 ordering 설정을 가능하게 해준다는 의미에서
+`ordering_fields = '__all__'`로 설정해줘도 됩니다.
+
+### ordering
+ordering_fields가 아니라 `ordering`을 설정한다는 건 default를 설정한다는 겁니다.
+물론 queryset에 order_by를 설정해서 넘겨줘도 되겠지만, 이렇게 사용하는 이유는 다음과 같습니다.
+
+1. context 그 자체로서 전달된다는 걸 뜻함
+2. column header가 결과값을 정렬하는 데 사용된다면, 다르게 render할 수 있음
+
 ## DjangoObjectPermissionsFilter
 ## Custom generic filtering
 ## Example
 ## Customizing the interface
 ## Pagination & schemas
-## Third party packages
-## Django REST framework filters package
-## Django REST framework full word search filter
-## Django URL Filter
-## drf-url-filters
