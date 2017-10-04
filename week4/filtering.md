@@ -291,9 +291,3 @@ ordering_fields가 아니라 `ordering`을 설정한다는 건 default를 설정
 
 1. context 그 자체로서 전달된다는 걸 뜻함
 2. column header가 결과값을 정렬하는 데 사용된다면, 다르게 render할 수 있음
-
-## DjangoObjectPermissionsFilter
-## Custom generic filtering
-## Example
-## Customizing the interface
-## Pagination & schemas
