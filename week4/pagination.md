@@ -159,7 +159,7 @@ HTTP 200 OK
     ]
 }
 ```
-
+#### 설정
 설정은 이렇게 할 수 있습니다.
 
 ```python
@@ -208,9 +208,66 @@ template
 ```
 
 ### CursorPagination
-## Custom pagination styles
-## Example
-## Using your custom pagination class
-## Pagination & schemas
-## HTML pagination controls
-## Customizing the controls
+
+cursor 기반의 pagination은 결과 값의 특정 페이지로 이동하기 위한 `cursor`라는 개념을 도입합니다.
+
+이 pagination 스타일은 다음 / 이전으로 가는 컨트롤만 제공하여 유저가 무작위한 page를 볼 수 없도록합니다.
+
+CursorPagination은 결과 items의 고유한 순서가 필요합니다. 이 순서는 대개 생성된 시간(timestamp)으로 정해집니다.
+
+CursorPagination의 장점은 다음과 같습니다.
+
+1. 일정한 Pagination View를 제공한다.
+: pagination하는 동안 새로운 아이템들이 추가된다고 하더라도, 유저는 같은 레코드를 볼 일이 없게 됩니다.
+
+2. 아주 큰 dataset을 지원한다.
+offset 기반 pagination 은 아주 큰 dataset에서 비효율적이거나 쓸 수 없는 경우가 있습니다.
+그에 반해 CursorPagination은 고정된 시간 값을 가져, dataset size가 커지더라도 느려지지 않습니다.
+
+#### 한계점
+CursorPagination은 created Timestamp에 기반합니다.
+그래서 ordering에 있어서 아주 주의해야합니다.
+
+CursorPagination과 ordering을 동시에 쓰려면,
+
+1. pagination class에 있는 `ordering`  attribute를 override 해서 쓰거나
+
+2. Ordering Filter를 CursorPagination 과 함께 쓰면 됩니다.
+이렇게 사용할 때는 유저가 ordering을 할 수 있는 필드에 대한 제한점이 있습니다.
+
+* 변하지않는 값이어야한다. (Timestamp나 slug,혹은 생성 시에 한번만 set되는 값)
+* 유니크한 값이어야한다. ms단위로 찍히는 Timestamp 정도면 거의 unique할 수 있겠죠.
+* string으로 바꿀 수 있는 non-nullable 값이어야한다.
+* float값은 아니어야한다. (Precision error가 날 수 있기때문) Decimal값을 쓰세요.
+* 해당 필드가 [Database index](https://lalwr.blogspot.kr/2016/02/db-index.html)여야한다.
+
+위의 조건을 만족시키지 않아도 잘 동작할 수는 있지만, cursor pagination의 이점을 잘 활용하지 못할 수 있습니다.
+
+
+#### 설정
+설정은 이렇게 할 수 있습니다.
+```python
+REST_FRAMEWORK = {
+'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
+'PAGE_SIZE': 100
+}
+
+물론 GenericAPIView 에서 `pagniation_class` attribute를 `CursorPagination`으로 설정할 수도 있습니다.
+
+
+다음과 같은 정보들을 커스텀하고 싶다면, CursorPagination 상속해서 위와 같이 적용하면 됩니다.
+
+```
+page_size
+# client가 query parameter로 limit값을 안넘겨 줄 때 쓰이는 숫자 값. 기본 값은 settings에 있는 PAGE_SIZE와 같습니다.
+
+cursor_query_param
+#  'cursor' 로 쓰이는 query parameter의 이름이 되는 값. 기본 값은 'cursor'
+
+ordering
+# cursor가 만들어지는 기반인 값을 의미합니다. 이 값은 string이나 string list여야합니다.'slug' 일수도 있지만, 기본 값은 '-created'입니다. OrderingFilter를 사용해서 바꿀수 있습니다.
+
+template
+# browsable API 로 만들 때 쓰이는 pagination control template의 이름.기본은"rest_framework/pagination/previous_and_next.html".
+
+```
