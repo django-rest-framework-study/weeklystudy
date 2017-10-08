@@ -251,11 +251,13 @@ REST_FRAMEWORK = {
 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.CursorPagination',
 'PAGE_SIZE': 100
 }
+```
 
 물론 GenericAPIView 에서 `pagniation_class` attribute를 `CursorPagination`으로 설정할 수도 있습니다.
 
 
 다음과 같은 정보들을 커스텀하고 싶다면, CursorPagination 상속해서 위와 같이 적용하면 됩니다.
+
 
 ```
 page_size
