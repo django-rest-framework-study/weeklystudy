@@ -92,6 +92,28 @@ postman으로 확인해봅니다.
 
 ### user로 필터링하기
 
+현재 인증된 유저와 관련있는 값만 받아주고 싶을 때도 있겠죠.
+이럴 땐 `request.user` 에서 값을 받아와서 필터링하면 됩니다.
+
+
+```python
+from myapp.models import Purchase
+from myapp.serializers import PurchaseSerializer
+from rest_framework import generics
+
+class PurchaseList(generics.ListAPIView):
+    serializer_class = PurchaseSerializer
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases
+        for the currently authenticated user.
+        """
+        user = self.request.user
+        return Purchase.objects.filter(purchaser=user)
+```
+
+
 ## Generic Filtering 하기
 
 위에서 한 것 처럼 queryset을 override하는 방식으로 filtering을 할 수 있지만,
