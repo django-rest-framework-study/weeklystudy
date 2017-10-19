@@ -6,7 +6,7 @@
     - 예) -H "Accept: application/json" -H "Content-Type: application/json" -X GET https://django-study.kr/chapter/
 3. url query_param 을 이용하는 경우
     - 예) -x https://django-study.kr/chapter/?accept=application/json
-4. url slug field  를 이용하는 경우 (https://django-study.kr/chapter/{chapter_no}/)
+4. url slug 이용하는 경우 (https://django-study.kr/chapter/{chapter_no}/)
     - 예) -X GET https://django-study.kr/chapter/1/
 5. POST 방식등 body에 데이터를 담아 보내는 경우
     - 예) curl -H "Content-Type: application/json" -X POST -d '{"username":"xyz","password":"xyz"}' https://django-study.kr/chapter/1/
@@ -114,8 +114,8 @@ def snippet_list(request):
 // 버즈빌 포스팅에서도 GET.get 으로 사용했네요
 -> https://www.buzzvil.com/2016/12/26/how-to-use-django-rest-framework-buzzvil/
 
-## 4. url slug field  를 이용하는 경우 (https://django-study.kr/chapter/{chapter_no}/)
-- 다들 잘 아시다시피 url slug field 는 `urls.py` 에서 처리됩니다.
+## 4. url slug  를 이용하는 경우 (https://django-study.kr/chapter/{chapter_no}/)
+- 다들 잘 아시다시피 url slug는 `urls.py` 에서 처리됩니다.
 - view 에서 해당  불러오려면, self.kwargs.get('chater_no') -- (self는 View class) 를 이용합니다.
 - 자세한 내용는 view 나 url 챕터에서 부탁드립니다...
 
