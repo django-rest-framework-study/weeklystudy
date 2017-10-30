@@ -76,32 +76,32 @@ http://localhost:8000/api/stations/?format=json # 여기선 Response의 Content-
         - renderer_context
 
     - BaseRenderer에는 아무것도 없음
+    
+```python
+class BaseRenderer(object):
+    media_type = None
+    format = None
+    charset = 'utf-8'
+    render_style = 'text'
 
-    ```python
-    class BaseRenderer(object):
-        media_type = None
-        format = None
-        charset = 'utf-8'
-        render_style = 'text'
-
-        def render(self, data, accepted_media_type=None, renderer_context=None):
-            raise NotImplementedError('Renderer class requires .render() to be implemented')
-    ```
+    def render(self, data, accepted_media_type=None, renderer_context=None):
+        raise NotImplementedError('Renderer class requires .render() to be implemented')
+```
 
     - Example
 
-    ```python
-    # from django.utils.encoding import smart_unicode <- python3.x에선 지원 안함
-    from rest_framework import renderers
+```python
+# from django.utils.encoding import smart_unicode <- python3.x에선 지원 안함
+from rest_framework import renderers
 
-    class PlainTextRenderer(renderers.BaseRenderer):
-        media_type = 'text/plain'
-        format = 'txt'
-        charset = 'utf-8'
+class PlainTextRenderer(renderers.BaseRenderer):
+    media_type = 'text/plain'
+    format = 'txt'
+    charset = 'utf-8'
 
-        def render(self, data, media_type=None, renderer_context=None):
-            return data.encode(self.charset)
-    ```
+    def render(self, data, media_type=None, renderer_context=None):
+        return data.encode(self.charset)
+```
 
 ---
 
