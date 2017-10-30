@@ -1,5 +1,5 @@
 1. What is Parser?
-![]('/images/get_request_header.png')
+![](./images/get_request_header.png)
 - request header에 담긴 내용(미디어 타입 등)을 parse하여 요청한 대로 response를 보내준다.
 - Accept, Content-type 등이 담겨 있다.
     - Accept: default는 `rest_framework.parsers.JSONParser`이기 때문에 `application/json`이 찍혀있음.
