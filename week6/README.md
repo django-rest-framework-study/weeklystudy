@@ -1,7 +1,12 @@
-- Renderers
-    - How the renderer is determined
-    - Setting the renderers
-    - Ordering of renderer classes
+1. Parsers
+- API Reference
+    - JSONParser
+    - FormParser
+    - MultiPartParser
+    - FileUploadParser
+- Custom parsers
+
+2. Renderers
 - API Reference
     - JSONRenderer
     - TemplateHTMLRenderer
@@ -16,18 +21,3 @@
     - renderer_context=None
     - Example
     - Setting the character set
-- Advanced renderer usage
-    - Varying behaviour by media type
-    - Underspecifying the media type
-    - Designing your media types
-    - HTML error views
-- Third party packages
-    - YAML
-    - XML
-    - JSONP
-    - MessagePack
-    - CSV
-    - UltraJSON
-    - CamelCase JSON
-    - Pandas (CSV, Excel, PNG)
-    - LaTeX
