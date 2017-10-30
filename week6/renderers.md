@@ -70,13 +70,13 @@ http://localhost:8000/api/stations/?format=json # 여기선 Response의 Content-
 
 ## 3. Rederer 커스터마이징하기
 
-    - ~아마 건드릴 일이 없지않을까~
-        - data
-        - media_type
-        - renderer_context
+- ~아마 건드릴 일이 없지않을까~
+    - data
+    - media_type
+    - renderer_context
 
-    - BaseRenderer에는 아무것도 없음
-    
+- BaseRenderer에는 아무것도 없음
+
 ```python
 class BaseRenderer(object):
     media_type = None
@@ -88,7 +88,7 @@ class BaseRenderer(object):
         raise NotImplementedError('Renderer class requires .render() to be implemented')
 ```
 
-    - Example
+- Example
 
 ```python
 # from django.utils.encoding import smart_unicode <- python3.x에선 지원 안함
