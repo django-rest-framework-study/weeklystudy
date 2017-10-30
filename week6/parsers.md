@@ -1,5 +1,7 @@
-1. What is Parser?
+## 1. What is Parser?
+
 ![](./images/get_request_header.png)
+
 - request header에 담긴 내용(미디어 타입 등)을 parse하여 요청한 대로 response를 보내준다.
 - Accept, Content-type 등이 담겨 있다.
     - Accept: default는 `rest_framework.parsers.JSONParser`이기 때문에 `application/json`이 찍혀있음.
@@ -30,8 +32,8 @@
 
 ---
 
-2. DRF에서 제공하는 Parser 종류
-    1. JSONParser
+## 2. DRF에서 제공하는 Parser 종류
+    1. JSONParser : Default
     2. FormParser : html 폼 content
         - request.data will be populated with a QueryDict.
         - html 폼데이터를 완벽히 지원하려면 FormParser와 MultiPartParser를 같이 써야 함.
@@ -42,7 +44,9 @@
         - .media_type: `multipart/form-data` 와 같이 생겼다.
     4. FileUploadParser
 
-3. Custom parsers도 만들 수 있다!
+---
+
+## 3. Custom parsers도 만들 수 있다!
 : `.parse(self, stream, media_type, parser_context)` 오버라이딩 하기. 소스코드는 비어있음.
     - stream : request 바디의 내용
     - media_type : Optional
