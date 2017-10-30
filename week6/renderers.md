@@ -65,10 +65,14 @@ http://localhost:8000/api/stations/?format=json
 ---
 
 ## 3. Rederer 커스터마이징하기
-    - ` def render(self, data, accepted_media_type=None, renderer_context=None):` 로 커스터마이징 하기 ~아마 건드릴일이 없을 듯?~
+```python
+def render(self, data, accepted_media_type=None, renderer_context=None):
+```
+로 커스터마이징 하기 ~아마 건드릴일이 없을 듯?~
+
+    - BaseRenderer에는 아무것도 없음
 
     ```python
-    # BaseRenderer에는 아무것도 없음
     class BaseRenderer(object):
         media_type = None
         format = None
@@ -77,9 +81,10 @@ http://localhost:8000/api/stations/?format=json
 
         def render(self, data, accepted_media_type=None, renderer_context=None):
             raise NotImplementedError('Renderer class requires .render() to be implemented')
+    ```
 
-    # Example
-
+    - Example
+    ```python
     # from django.utils.encoding import smart_unicode <- python3.x에선 지원 안함
     from rest_framework import renderers
 

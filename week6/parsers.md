@@ -33,32 +33,34 @@
 ---
 
 ## 2. DRF에서 제공하는 Parser 종류
-    1. JSONParser : Default
-    2. FormParser : html 폼 content
-        - request.data will be populated with a QueryDict.
-        - html 폼데이터를 완벽히 지원하려면 FormParser와 MultiPartParser를 같이 써야 함.
-        - .media_type: `application/x-www-form-urlencoded` 로 지정해준다.
-        * [Github 소스코드](https://github.com/encode/django-rest-framework/blob/ea894cd90a7544b0507c5f94bb3eb3da25000ccf/rest_framework/parsers.py)
-    3. MultiPartParser
-        - request.data will be populated with a QueryDict.
-        - .media_type: `multipart/form-data` 와 같이 생겼다.
-    4. FileUploadParser
+
+1. JSONParser : Default
+2. FormParser : html 폼 content
+    - request.data will be populated with a QueryDict.
+    - html 폼데이터를 완벽히 지원하려면 FormParser와 MultiPartParser를 같이 써야 함.
+    - .media_type: `application/x-www-form-urlencoded` 로 지정해준다.
+    * [Github 소스코드](https://github.com/encode/django-rest-framework/blob/ea894cd90a7544b0507c5f94bb3eb3da25000ccf/rest_framework/parsers.py)
+3. MultiPartParser
+    - request.data will be populated with a QueryDict.
+    - .media_type: `multipart/form-data` 와 같이 생겼다.
+4. FileUploadParser
 
 ---
 
 ## 3. Custom parsers도 만들 수 있다!
-: `.parse(self, stream, media_type, parser_context)` 오버라이딩 하기. 소스코드는 비어있음.
-    - stream : request 바디의 내용
-    - media_type : Optional
-        - `*/*`, `text/plain`, `application/json`, `application/x-www-form-urlencoded`, `multipart/form-data`
-    - parser_context : 기타 정보를 dictionary 형태로 전달.
-        - filename 등
+`.parse(self, stream, media_type, parser_context)` 오버라이딩 하기. 소스코드는 비어있음.
 
-    ```python
-    class PlainTextParser(BaseParser):
+- stream : request 바디의 내용
+- media_type : Optional
+    - `*/*`, `text/plain`, `application/json`, `application/x-www-form-urlencoded`, `multipart/form-data`
+- parser_context : 기타 정보를 dictionary 형태로 전달.
+    - filename 등
 
-    media_type = 'text/plain'
+```python
+class PlainTextParser(BaseParser):
 
-    def parse(self, stream, media_type=None, parser_context=None):
-        return stream.read()
-    ```
+media_type = 'text/plain'
+
+def parse(self, stream, media_type=None, parser_context=None):
+    return stream.read()
+```
