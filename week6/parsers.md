@@ -1,5 +1,5 @@
 1. What is Parser?
-![]('./images/get_request_header.png')
+![]('/images/get_request_header.png')
 - request header에 담긴 내용(미디어 타입 등)을 parse하여 요청한 대로 response를 보내준다.
 - Accept, Content-type 등이 담겨 있다.
     - Accept: default는 `rest_framework.parsers.JSONParser`이기 때문에 `application/json`이 찍혀있음.
@@ -43,21 +43,18 @@
     4. FileUploadParser
 
 3. Custom parsers도 만들 수 있다!
-: `.parse(self, stream, media_type, parser_context)`로 오버라이딩 하기
-    - stream : A stream-like object representing the body of the request.
-    - media_type : Optional. media type of the incoming request content. _Depending on the request's Content-Type: header_, this may be more specific than the renderer's media_type attribute, and may include media type parameters. For example "text/plain; charset=utf-8".
-    - parser_context : Optional.
+: `.parse(self, stream, media_type, parser_context)` 오버라이딩 하기. 소스코드는 비어있음.
+    - stream : request 바디의 내용
+    - media_type : Optional
+        - `*/*`, `text/plain`, `application/json`, `application/x-www-form-urlencoded`, `multipart/form-data`
+    - parser_context : 기타 정보를 dictionary 형태로 전달.
+        - filename 등
 
     ```python
     class PlainTextParser(BaseParser):
-    """
-    Plain text parser.
-    """
+
     media_type = 'text/plain'
 
     def parse(self, stream, media_type=None, parser_context=None):
-        """
-        Simply return a string representing the body of the request.
-        """
         return stream.read()
     ```
