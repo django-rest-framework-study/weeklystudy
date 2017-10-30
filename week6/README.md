@@ -1,4 +1,4 @@
-1. Parsers
+## 1. Parsers
 - API Reference
     - JSONParser
     - FormParser
@@ -6,7 +6,7 @@
     - FileUploadParser
 - Custom parsers
 
-2. Renderers
+## 2. Renderers
 - API Reference
     - JSONRenderer
     - TemplateHTMLRenderer

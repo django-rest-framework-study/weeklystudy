@@ -3,10 +3,13 @@
 
 - 클라이언트에 데이터가 전달되기 전에, '렌더링'된다. response 로 전달할 데이터를 내가 원하는 형태로 렌더할 수 있다.
 - `Accept` header에서 media_type을 보고 결정한다. url에서 format을 명시할 수도 있다.
-```plain
-http://localhost:8000/api/stations/?format=json
+
+```python
+http://localhost:8000/api/stations/?format=api # 여기선 Response의 Content-type이 text/html이고,
+http://localhost:8000/api/stations/?format=json # 여기선 Response의 Content-type이 application/json이다.
 ```
-- 사용 : 디폴트 렌더러는 `settings.py` REST_FRAMEWORK에 'DEFAULT_RENDERER_CLASSES'로 넣어주고, `views.py`에서 특정 view에만 지정할 수도 있다.
+
+- 사용 : 디폴트 렌더러는 `settings.py` REST_FRAMEWORK에 'DEFAULT_RENDERER_CLASSES'로 넣어준다. `views.py`에서 특정 view에만 지정할 수도 있다.
 
     1. 디폴트
     ```python
@@ -40,6 +43,7 @@ http://localhost:8000/api/stations/?format=json
     - .media_type: `application/json`
     - .format: `'.json'`
     - .charset: `None`
+    * [JSONRenderer](https://github.com/encode/django-rest-framework/blob/ea894cd90a7544b0507c5f94bb3eb3da25000ccf/rest_framework/renderers.py)
 
 - TemplateHTMLRenderer : 특정 html 템플릿 안에 렌더링하는 것. api 응답 페이지를 커스터마이징 할 수 있다. 그래서 serializing을 하지 않아도 됨. ** `template_name` 인자를 꼭 넘겨줘야 한다.
 
@@ -65,10 +69,11 @@ http://localhost:8000/api/stations/?format=json
 ---
 
 ## 3. Rederer 커스터마이징하기
-```python
-def render(self, data, accepted_media_type=None, renderer_context=None):
-```
-로 커스터마이징 하기 ~아마 건드릴일이 없을 듯?~
+
+    - ~아마 건드릴 일이 없지않을까~
+        - data
+        - media_type
+        - renderer_context
 
     - BaseRenderer에는 아무것도 없음
 
@@ -84,6 +89,7 @@ def render(self, data, accepted_media_type=None, renderer_context=None):
     ```
 
     - Example
+
     ```python
     # from django.utils.encoding import smart_unicode <- python3.x에선 지원 안함
     from rest_framework import renderers
@@ -118,4 +124,9 @@ def render(self, data, accepted_media_type=None, renderer_context=None):
     ```python
     return Response(data, content_type='image/png')
     ```
+
+    - [HATEOAS](https://en.wikipedia.org/wiki/HATEOAS) - Hypermedia as the Engine of Application State.
+
+    > In the words of Roy Fielding, "A REST API should spend almost all of its descriptive effort in defining the media type(s) used for representing resources and driving application state, or in defining extended relation names and/or hypertext-enabled mark-up for existing standard media types.".
+
 ---
