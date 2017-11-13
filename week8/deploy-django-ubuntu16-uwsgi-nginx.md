@@ -159,10 +159,10 @@
 
 - #### Error log Check
 
-  - $systemctl status uwsgi
-  - log 파일 위치: /var/log/syslog
-  - sudo tail -F /var/log/nginx/error.log
-  - sudo journalctl -u uwsgi
+  - syslog 파일 위치: /var/log/syslog
+  - $ sudo systemctl status uwsgi
+  - $ sudo tail -F /var/log/nginx/error.log
+  - $ sudo journalctl -u uwsgi
 
 - #### Trouble shotting
 
