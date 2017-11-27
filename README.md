@@ -8,7 +8,7 @@
 - Week 3(지형) - [Status codes](https://github.com/django-rest-framework-study/weeklystudy/blob/master/week3/Status_Codes.markdown) / [Exceptions](https://github.com/django-rest-framework-study/weeklystudy/blob/master/week3/Exceptions.markdown)
 - Week 4(준영) - Filtering / Pagination
 - Week 5(희찬) - Views / Generic views / Viewsets, Router + RESTful
-- Week 6(지영) - Serializers / Renderer / Parser /
+- Week 6(지영) - [Renderer](https://github.com/django-rest-framework-study/weeklystudy/blob/master/week6/renderer.md] / [Parser](https://github.com/django-rest-framework-study/weeklystudy/blob/master/week6/parsers.md) /
 - Week 7(준범)
 - Week 8(정욱) - Validators / deploy
-- Week 9(슬찬)
+- Week 9(슬찬) - Serializers
