@@ -154,7 +154,7 @@ class job_api(generics.ListAPIView):
 이렇게요.
 
 #### DjangoFilterBackend
-그 다음에, `django_filters` 라는 라이브러리를 깔아줍니다.
+그 다음에, `django-filter` 라는 라이브러리를 깔아줍니다.
 이후에는
 ```python
 # settings.py
